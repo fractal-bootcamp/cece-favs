@@ -1,0 +1,45 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Picture {
+    id          String   @id @default(cuid())
+    title       String
+    locationId  String
+    location    Location @relation(fields: [locationId], references: [id]) //picture has one location (1-1)
+    date        String
+    //latLong   String 
+    //type      String
+    imageUrl    String
+    genres      Genres[] //picture has multiple genres (n-m)
+    description String
+    tags        Tag[] //picture can have multiple tags (m-n)
+}
+
+model Location {
+    id    String    @id @default(cuid())
+    image Picture[] //location will have many pictures (1-n)
+    name  String    @unique
+    //state   String
+    //country String
+}
+
+model Genres {
+    id       String    @id @default(cuid())
+    name     String    @unique
+    tags     Tag[]
+    pictures Picture[] // picture will have multiple geners (n-m)
+}
+
+model Tag {
+    id    String    @id @default(cuid())
+    name  String    @unique
+    image Picture[] //tag can have multiple pictures (m-n)
+
+    Genre Genres[]
+}

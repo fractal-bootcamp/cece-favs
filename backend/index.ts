@@ -20,7 +20,7 @@ app.use(express.json());
 
 //test API endpoint
 app.get("/", (req, res) => {
-  res.send("Welcome to Express & TypeScript Server");
+  res.send("pictures");
 });
 
 //GET request to create endpoint to query picture data

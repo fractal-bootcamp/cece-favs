@@ -15,7 +15,7 @@ model Picture {
     date        String
     //latLong   String 
     //type      String
-    imageUrl    String
+    imageName   String
     genres      Genres[] //picture has multiple genres (n-m)
     description String
     tags        Tag[] //picture can have multiple tags (m-n)

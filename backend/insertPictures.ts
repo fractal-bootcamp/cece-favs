@@ -46,7 +46,7 @@ async function insertPicture(data: PictureData) {
         //pass through all the params of picture type
         title: data.title,
         date: data.date,
-        imageUrl: data.imageUrl,
+        imageName: data.imageName,
         description: data.description,
         // location is (1-n) : connect with a single object(Picture)
         location: { connect: { id: location.id } }, //connecting new picture to an existing location

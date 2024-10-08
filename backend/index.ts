@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
+import path from "path";
 
 //For env File
 dotenv.config();
@@ -18,18 +19,27 @@ app.use(cors());
 //parse JSON
 app.use(express.json());
 
+//after setting up CORS and JSON parsing --but before defining any routes -> add path to images
+const imagePath = path.join(__dirname, "./assets");
+console.log("============__________IS THIS THING ON?_____________===========");
+console.log(imagePath);
+app.use("/images", express.static(imagePath, { index: false }));
+
 //test API endpoint
-app.get("/", (req, res) => {
-  res.send("pictures");
+app.get("/images", (req, res) => {
+  res.send(
+    "Image directory. Use /images/[filename] to access specific images."
+  );
 });
 
 //GET request to create endpoint to query picture data
 app.get("/api/pictures/search", async (req, res) => {
   try {
     //destructure request query and assign the value to q
-    const { q } = req.query;
+    const { query } = req.query;
     // explicitly chek query is a string
-    const searchQuery = typeof q === "string" ? q : "";
+    const searchQuery = typeof query === "string" ? query : "";
+    console.log("finding pictures for query: ", searchQuery);
     // call prisma database and store related pictures in variable as an object
     const pictures = await prisma.picture.findMany({
       where: {
@@ -68,13 +78,16 @@ app.get("/api/pictures/search", async (req, res) => {
       take: 20, //limit results to 20 pictures
     });
 
-    console.log("return picture objecy:", pictures, typeof pictures);
+    console.log(`we have found ${pictures.length} pictures..`);
+    if (pictures.length > 0) {
+      console.log("ur first image:", JSON.stringify(pictures[0], null, 2));
+    }
 
     //send pictures of object back to the client as JSON
     res.json(pictures);
   } catch (error) {
-    console.error("error searching pictures:", error);
-    res.status(500).json({ error: "An error occured while searching photos" });
+    console.error("no pictures for you!", error);
+    res.status(500).json({ error: "ERROOoooooOOOOr" });
   }
 });
 

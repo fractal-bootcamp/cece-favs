@@ -230,7 +230,7 @@ export const pictureData: PictureData[] = [
     title: "Rialto Bridge",
     location: "Venice, IT",
     date: "August 2022",
-    imageName: "venice12",
+    imageName: "venice12.jpg",
     genres: ["landscape", "travel", "street"],
     description: "views NorthWest from the Ponte di Rialto",
     tags: ["blue", "orange", "35mm", "canal"],
